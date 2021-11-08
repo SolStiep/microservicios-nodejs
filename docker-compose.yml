@@ -1,0 +1,42 @@
+version: '3'
+services:
+
+  ms-number:
+    image: msnumber
+    build:
+      context: ./microA
+      dockerfile: Dockerfile
+    container_name: ms-number
+    ports:
+    - "4000:80"
+    environment:
+      - PORT=80
+    restart: "no"
+
+  ms-year:
+    image: msyear
+    build:
+      context: ./microB
+      dockerfile: Dockerfile
+    container_name: ms-year
+    ports:
+    - "4001:80"
+    environment:
+      - PORT=80
+      - NUMBER_HOST=ms-number
+      - NUMBER_PORT=80
+    restart: "no"
+
+  ms-yearsago:
+    image: msyearsago
+    build:
+      context: ./microC
+      dockerfile: Dockerfile
+    container_name: ms-yearsago
+    ports:
+    - "3000:80"
+    environment:
+      - PORT=80
+      - NUMBER_HOST=ms-year
+      - NUMBER_PORT=80
+    restart: "no"
